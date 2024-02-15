@@ -283,7 +283,7 @@ proc poly1305Digest(state: var MacState, digest: var openArray[uint8], len: Natu
 
 ######################################################################################
 
-proc newPoly1305Ctx(key, nonce: openArray[byte], data: openArray[byte] = @[]): MacState =
+proc newPoly1305Ctx*(key, nonce: openArray[byte], data: openArray[byte] = @[]): MacState =
   let (r, s, nonce) = derivePoly1305KeyPair(key, nonce)
   
   let initResult = poly1305Init(result, r, s)
@@ -297,7 +297,7 @@ proc newPoly1305Ctx(key, nonce: openArray[byte], data: openArray[byte] = @[]): M
   return result
 
 
-proc update(state: var MacState, input: openArray[uint8]) =
+proc update*(state: var MacState, input: openArray[uint8]) =
   ## wrapper
   discard state.poly1305Update(input, input.len)
 
@@ -322,7 +322,7 @@ proc hexDigest*(state: var MacState): string =
   return result
 
 
-proc verify(ctx: var MacState, macTag: openArray[uint8]): bool =
+proc verify*(ctx: var MacState, macTag: openArray[uint8]): bool =
   let secret = urandom(16)
   var mac1 = newBlake2sCtx(key=secret, msg=macTag,       digestSize=20)
   var mac2 = newBlake2sCtx(key=secret, msg=ctx.digest(), digestSize=20)
@@ -332,7 +332,7 @@ proc verify(ctx: var MacState, macTag: openArray[uint8]): bool =
   return false
 
 
-proc hexVerify(ctx: var MacState, hexMacTag: string): bool =
+proc hexVerify*(ctx: var MacState, hexMacTag: string): bool =
   return ctx.verify(unhexlify(hexMacTag))
 
 ######################################################################################
