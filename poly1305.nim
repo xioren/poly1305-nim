@@ -340,9 +340,8 @@ proc hexVerify*(ctx: var MacState, hexMacTag: string): bool =
 when isMainModule:
   let secret = encodeBytes("Thirtytwo very very secret bytes")
   let nonce = encodeBytes("0123456789AB")
-  var state: MacState
 
-  state = newPoly1305Ctx(secret, nonce)
+  var state = newPoly1305Ctx(secret, nonce)
   state.update(encodeBytes("Hello"))
 
   let mac = state.hexDigest()
