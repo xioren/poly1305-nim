@@ -297,6 +297,10 @@ proc newPoly1305Ctx*(key, nonce: openArray[byte], data: openArray[byte] = @[]): 
   return result
 
 
+proc newPoly1305Ctx*(key, nonce: string, data: openArray[byte] = @[]): MacState =
+  return newPoly1305Ctx(encodeBytes(key), encodeBytes(nonce), data)
+
+
 proc update*(state: var MacState, input: openArray[uint8]) =
   ## wrapper
   discard state.poly1305Update(input, input.len)
@@ -343,8 +347,8 @@ proc hexVerify*(ctx: var MacState, hexMacTag: string): bool =
 ######################################################################################
 
 when isMainModule:
-  let secret = encodeBytes("Thirtytwo very very secret bytes")
-  let nonce = encodeBytes("0123456789AB")
+  let secret = "Thirtytwo very very secret bytes"
+  let nonce = "0123456789AB"
 
   var state = newPoly1305Ctx(secret, nonce)
   state.update("Hello")
