@@ -10,7 +10,7 @@ type
   MacState = object
     r, rr: array[4, uint32]    # First key - variable in polynomial
     s, h: array[5, uint32]     # Second key and state, respectively
-    buffer: array[16, uint8]   # Temp input
+    buffer: array[16, uint8]
     bufferUsed: uint           # Track how much of the buffer is used
 
 const
