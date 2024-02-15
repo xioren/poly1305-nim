@@ -302,6 +302,11 @@ proc update*(state: var MacState, input: openArray[uint8]) =
   discard state.poly1305Update(input, input.len)
 
 
+proc update*(state: var MacState, input: string) =
+  ## wrapper
+  discard state.poly1305Update(encodeBytes(input), input.len)
+
+
 proc digest*(state: var MacState): array[16, uint8] =
   ## produces a binary mac tag
   ## does not alter mac state
@@ -342,7 +347,7 @@ when isMainModule:
   let nonce = encodeBytes("0123456789AB")
 
   var state = newPoly1305Ctx(secret, nonce)
-  state.update(encodeBytes("Hello"))
+  state.update("Hello")
 
   let mac = state.hexDigest()
   echo mac
