@@ -336,9 +336,7 @@ proc verify*(ctx: var MacState, macTag: openArray[uint8]): bool =
   var mac1 = newBlake2sCtx(key=secret, msg=macTag,       digestSize=20)
   var mac2 = newBlake2sCtx(key=secret, msg=ctx.digest(), digestSize=20)
 
-  if mac1.digest() == mac2.digest():
-    return true
-  return false
+  return mac1.digest() == mac2.digest()
 
 
 proc hexVerify*(ctx: var MacState, hexMacTag: string): bool =
